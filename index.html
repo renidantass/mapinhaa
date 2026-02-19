@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BairroGuessr</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen active">
+        <div class="minimal-panel">
+            <h1 class="logo">Bairro<span class="highlight">Guessr</span></h1>
+            
+            <div class="main-actions">
+                <button id="geo-btn" class="primary-btn huge"><i class="fa-solid fa-location-arrow"></i> Jogar onde estou</button>
+                <div class="divider"><span>OU</span></div>
+                
+                <div class="input-wrapper">
+                    <input type="text" id="lat-input" placeholder="Latitude (-23.55)" class="clean-input">
+                    <input type="text" id="lng-input" placeholder="Longitude (-46.63)" class="clean-input">
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <button id="start-btn" class="secondary-btn">Começar com coordenadas</button>
+                <button id="settings-btn" class="icon-btn" title="Configurações (API Key)"><i class="fa-solid fa-gear"></i></button>
+            </div>
+
+            <!-- Settings Modal (Hidden by default) -->
+            <div id="settings-modal" class="settings-modal hidden">
+                <h3>Configurações</h3>
+                <label>Google Maps API Key</label>
+                <input type="password" value="AIzaSyDoaWmTN2513e5LGxOq--65ekL4PMqjUAs" id="api-key-input" placeholder="Cole sua chave aqui" class="clean-input full">
+                <button id="save-settings-btn" class="text-btn">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game UI -->
+    <div id="game-ui" class="hidden">
+        <div id="pano"></div>
+
+        <!-- Upper HUD -->
+        <div class="hud-top">
+            <div class="hud-pill">
+                <span id="current-round">1</span> / 5
+            </div>
+            <div class="hud-pill points">
+                <i class="fa-solid fa-star"></i> <span id="current-score">0</span>
+            </div>
+            <div class="hud-pill timer">
+                <i class="fa-solid fa-clock"></i> <span id="time-left">60</span>s
+            </div>
+        </div>
+
+        <button id="return-start-btn" class="icon-btn floating-action" title="Voltar ao Início">
+            <i class="fa-solid fa-flag"></i>
+        </button>
+
+        <!-- Map Module -->
+        <div class="map-module-container" id="guess-container">
+            <div id="guess-map"></div>
+            <button id="toggle-map-btn" class="map-toggle"><i class="fa-solid fa-expand"></i></button>
+            <button id="guess-btn" class="guess-action-btn">CHUTAR</button>
+        </div>
+    </div>
+
+    <!-- Result Overlay -->
+    <div id="round-result-screen" class="overlay-screen hidden">
+        <div class="result-card">
+            <div class="result-header">
+                <h2 id="round-message">Muito Perto!</h2>
+                <div class="result-points">+<span id="round-points">0</span> pts</div>
+            </div>
+            <div class="result-details">
+                <p>Distância: <span id="round-distance">0 km</span> em <span id="city-name-display">...</span></p>
+            </div>
+            <button id="next-round-btn" class="primary-btn">Próxima</button>
+        </div>
+    </div>
+
+    <!-- Final Screen -->
+    <div id="final-screen" class="screen hidden">
+        <div class="minimal-panel final">
+            <h1>Fim de Jogo</h1>
+            <div class="final-score-display">
+                <span id="final-total-score">0</span> pts
+            </div>
+            <p id="final-verdict" class="verdict-text"></p>
+            <button id="restart-btn" class="primary-btn">Jogar Novamente</button>
+        </div>
+        <canvas id="fireworks-canvas"></canvas>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
