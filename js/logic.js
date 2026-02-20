@@ -46,7 +46,7 @@ const getPositionFromNavigator = () => {
 const getCoordinatesFromUser = async () => {
     try {
         const position = await getPositionFromNavigator();
-        return position.coords;
+        return { lat: position.coords.latitude, lng: position.coords.longitude };
     } catch (err) {
         console.error("Erro ou permissão negada", err);
     }
@@ -69,7 +69,7 @@ const calculateScore = async (distance) => {
     return score;
 };
 
-const guess = async () => {
+const takeGuess = async () => {
     const distance = await getDistance(state.markers.guess, state.markers.destination);
     state.score = await calculateScore(distance);
 };
@@ -79,11 +79,52 @@ const nextRound = () => {
         state.currentRound++;
 };
 
+function sortearCoordenadaPerto(latBase, lngBase, raioMaximo = 0.01) {
+    const variacaoLat = (Math.random() - 0.5) * raioMaximo;
+    const variacaoLng = (Math.random() - 0.5) * raioMaximo;
+
+    return {
+        lat: latBase + variacaoLat,
+        lng: lngBase + variacaoLng
+    };
+};
+
+async function sortearEnderecoReal(userLocation) {
+    const { Geocoder } = await google.maps.importLibrary("geocoding");
+    const geocoder = new Geocoder();
+
+    let encontrouEndereco = false;
+    let tentativa = 0;
+
+    while (!encontrouEndereco && tentativa < 10) {
+        tentativa++;
+        const pontoSorteado = sortearCoordenadaPerto(userLocation.lat, userLocation.lng, 0.02);
+
+
+        try {
+            const resposta = await geocoder.geocode({ location: pontoSorteado });
+
+            if (resposta.results && resposta.results[0]) {
+                encontrouEndereco = true;
+                console.log(`Sucesso na tentativa ${tentativa}!`);
+
+                return resposta.results[0].geometry.location;
+            }
+        } catch (erro) {
+            // Se o Google reclamar (ex: caiu no mar), ele cai aqui e o loop roda de novo
+            console.log("Caiu num lugar sem endereço, sorteando de novo...");
+        }
+    }
+
+    return "Não foi possível sortear um endereço fácil agora.";
+};
+
 export {
     startGame,
     calculateScore,
-    guess,
+    takeGuess,
     stopCountdown,
     resetTimeLeft,
-    nextRound
+    nextRound,
+    sortearEnderecoReal
 };

@@ -14,7 +14,7 @@ const elements = {
     score: document.getElementById('current-score'),
     palpiteIcon: document.getElementById('palpite-icon'),
     destinationIcon: document.getElementById('destination-icon'),
-    guessButton: document.getElementById('guess')
+    confirm: document.getElementById('guess')
 };
 
 const maps = {
@@ -59,11 +59,9 @@ const showScreen = (screenName) => {
     enableScreen(nextScreen);
 };
 
-const initMapIntoElement = async (element, userLocation) => {
-    let position = { lat: userLocation.latitude, lng: userLocation.longitude };
-
+const initMapIntoElement = async (element) => {
     maps.guess = new google.maps.Map(element, {
-        center: position,
+        center: state.destinationLocation,
         zoom: 8,
         disableDefaultUI: true,
         mapId: "DEMO_MAP_ID"
@@ -82,7 +80,7 @@ const initPanoramaMapIntoElement = async (element, userLocation) => {
     maps.panorama = new google.maps.StreetViewPanorama(
         element,
         {
-            position: { lat: userLocation.latitude, lng: userLocation.longitude },
+            position: state.destinationLocation,
             addressControl: false,
             disableDefaultUI: true,
             fullscreenControl: true,

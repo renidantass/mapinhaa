@@ -1,10 +1,11 @@
 const state = {
+    playing: false,
     markers: {
         guess: null,
         destination: null
     },
-    playing: false,
-    userLocation: { latitude: 0, longitude: 0 },
+    userLocation: { lat: 0, lng: 0 },
+    destinationLocation: { lat: 0, lng: 0 },
     rounds: 5,
     currentRound: 1,
     secondsPerRound: 120,

@@ -6,8 +6,11 @@ ui.elements.play.addEventListener('click', async () => {
     await logic.startGame();
     ui.updateRound(state.currentRound, state.rounds);
     ui.showScreen('game-ui');
-    await ui.initMapIntoElement(ui.elements.guessMap, state.userLocation);
-    await ui.initPanoramaMapIntoElement(ui.elements.panoramaMap, state.userLocation);
+
+    state.destinationLocation = await logic.sortearEnderecoReal(state.userLocation);
+
+    await ui.initMapIntoElement(ui.elements.guessMap);
+    await ui.initPanoramaMapIntoElement(ui.elements.panoramaMap);
 });
 
 ui.elements.resetPosition.addEventListener('click', async () => {
@@ -19,14 +22,14 @@ ui.elements.expandGuessMap.addEventListener('click', () => {
     ui.expandGuessMap();
 });
 
-ui.elements.guessButton.addEventListener('click', async () => {
+ui.elements.confirm.addEventListener('click', async () => {
     if (!state.markers.guess)
         return;
 
     if (!state.markers.destination)
-        state.markers.destination = await ui.addMarker({ lat: state.userLocation.latitude, lng: state.userLocation.longitude }, maps.guess, 'Destino', elements.destinationIcon);
+        state.markers.destination = await ui.addMarker(state.destinationLocation, ui.maps.guess, 'Destino', ui.elements.destinationIcon);
 
-    await logic.guess();
+    await logic.takeGuess();
     logic.stopCountdown();
     logic.resetTimeLeft();
     logic.nextRound();
