@@ -14,6 +14,11 @@ const startGame = async () => {
     }
 };
 
+const restartGame = () => {
+    state.currentRound = 0;
+    state.score = 0;
+};
+
 const initCountdown = () => {
     state.interval = setInterval(updateCountdown, 1000);
 };
@@ -100,7 +105,6 @@ async function sortearEnderecoReal(userLocation) {
         tentativa++;
         const pontoSorteado = sortearCoordenadaPerto(userLocation.lat, userLocation.lng, 0.02);
 
-
         try {
             const resposta = await geocoder.geocode({ location: pontoSorteado });
 
@@ -119,12 +123,31 @@ async function sortearEnderecoReal(userLocation) {
     return "Não foi possível sortear um endereço fácil agora.";
 };
 
+const resetMarkers = () => {
+    state.markers = {
+        guess: null,
+        destination: null
+    };
+};
+
+const completeRound = () => {
+    stopCountdown();
+    resetTimeLeft();
+    nextRound();
+    resetMarkers();
+    initCountdown();
+};
+
 export {
     startGame,
+    restartGame,
     calculateScore,
+    initCountdown,
     takeGuess,
+    completeRound,
     stopCountdown,
     resetTimeLeft,
     nextRound,
-    sortearEnderecoReal
+    sortearEnderecoReal,
+    resetMarkers
 };

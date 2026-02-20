@@ -2,6 +2,7 @@ import state from "./state.js";
 
 const elements = {
     play: document.getElementById('play'),
+    restart: document.getElementById('restart'),
     guessMap: document.getElementById('guess-map'),
     panoramaMap: document.getElementById('panorama-map'),
     resetPosition: document.getElementById('reset-position'),
@@ -12,6 +13,7 @@ const elements = {
     round: document.getElementById('current-round'),
     rounds: document.getElementById('total-rounds'),
     score: document.getElementById('current-score'),
+    finalTotalScore: document.getElementById('final-total-score'),
     palpiteIcon: document.getElementById('palpite-icon'),
     destinationIcon: document.getElementById('destination-icon'),
     confirm: document.getElementById('guess')
@@ -103,12 +105,12 @@ const refreshTimeLeft = () => {
         elements.timer.classList.add('text-danger');
 };
 
-const updateRound = (currentRound, totalRounds) => {
-    if (currentRound > totalRounds)
+const updateRound = (currentRound) => {
+    if (currentRound > state.rounds)
         return;
 
     elements.round.innerText = currentRound;
-    elements.rounds.innerText = totalRounds;
+    elements.rounds.innerText = state.rounds
 };
 
 const updateScore = (score) => {
@@ -116,6 +118,7 @@ const updateScore = (score) => {
         return;
 
     elements.score.innerText = score;
+    elements.finalTotalScore.innerText = score;
 };
 
 const expandGuessMap = () => {
@@ -145,6 +148,14 @@ const addMarker = async (location, map, label, iconElement) => {
     return marker;
 };
 
+const removeMarkers = () => {
+    if (!state.markers.guess || !state.markers.destination)
+        return;
+
+    state.markers.guess.map = null;
+    state.markers.destination.map = null;
+};
+
 const resetPosition = () => {
     maps.panorama.setPosition({ lat: state.userLocation.latitude, lng: state.userLocation.longitude });
 };
@@ -169,6 +180,7 @@ export {
     updateScore,
     expandGuessMap,
     addMarker,
+    removeMarkers,
     resetPosition,
     animateResetPosition
 };
