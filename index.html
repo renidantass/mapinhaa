@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BairroGuessr</title>
+    <title>Mapinha</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -15,10 +18,10 @@
     <!-- Start Screen -->
     <div id="start-screen" class="screen active">
         <div class="minimal-panel">
-            <h1 class="logo">Bairro<span class="highlight">Guessr</span></h1>
+            <h1 class="logo"><img src="images/android-chrome-192x192.png" />  Mapinh<span class="highlight">a</span></h1>
             
             <div class="main-actions">
-                <button id="play" class="primary-btn huge"><i class="fa-solid fa-location-arrow"></i> Jogar onde estou</button>
+                <button id="play" class="primary-btn huge"><i class="fa-solid fa-location-arrow"></i> Jogar</button>
             </div>
         </div>
     </div>
@@ -30,7 +33,7 @@
         <!-- Upper HUD -->
         <div class="hud-top">
             <div class="hud-pill">
-                <span id="current-round">1</span> / 5
+                <span id="current-round">0</span> / <span id="total-rounds">0</span>
             </div>
             <div class="hud-pill points">
                 <i class="fa-solid fa-star"></i> <span id="current-score">0</span>
@@ -40,15 +43,15 @@
             </div>
         </div>
 
-        <button id="return-start-btn" class="icon-btn floating-action" title="Voltar ao Início">
-            <i class="fa-solid fa-flag"></i>
+        <button id="reset-position" class="icon-btn floating-action" title="Voltar a posição inicial">
+            <i class="fa-solid fa-clock-rotate-left"></i>
         </button>
 
         <!-- Map Module -->
         <div class="map-module-container" id="guess-container">
             <div id="guess-map"></div>
-            <button id="toggle-map-btn" class="map-toggle"><i class="fa-solid fa-expand"></i></button>
-            <button id="guess-btn" class="guess-action-btn">CHUTAR</button>
+            <button id="expand-guess-map" class="map-toggle"><i class="fa-solid fa-expand"></i></button>
+            <button id="guess-btn" class="guess-action-btn">Confirmar</button>
         </div>
     </div>
 

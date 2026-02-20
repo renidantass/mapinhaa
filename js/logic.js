@@ -1,8 +1,29 @@
 import state from "./state.js";
 
 const startGame = async () => {
-    const coords = await getCoordinatesFromUser();
-    state.userLocation = coords;
+    if (state.playing)
+        return;
+
+    try {
+        state.userLocation = await getCoordinatesFromUser();
+        initCountdown();
+    } catch (err) {
+        console.error(err);
+    } finally {
+        state.playing = true;
+    }
+};
+
+const initCountdown = () => {
+    state.interval = setInterval(updateCountdown, 1000);
+}
+
+const updateCountdown = () => {
+    if (state.timeLeft > 0)
+        state.timeLeft--;
+
+    if (state.timeLeft < 1)
+        clearInterval(state.interval);
 };
 
 const getPositionFromNavigator = () => {
