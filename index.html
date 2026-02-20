@@ -30,6 +30,9 @@
     <div id="game-ui" class="screen hidden">
         <div id="panorama-map"></div>
 
+        <img id="palpite-icon" width="64" height="64" src="images/flag.svg" alt="Bandeira para sinalizar palpite">
+        <img id="destination-icon" width="64" height="64" src="images/destination.svg" alt="Bandeira para sinalizar palpite">
+
         <!-- Upper HUD -->
         <div class="hud-top">
             <div class="hud-pill">
@@ -39,7 +42,7 @@
                 <i class="fa-solid fa-star"></i> <span id="current-score">0</span>
             </div>
             <div class="hud-pill timer">
-                <i class="fa-solid fa-clock"></i> <span id="time-left">60</span>s
+                <i class="fa-solid fa-clock"></i> <span id="time-left">0</span>s
             </div>
         </div>
 
@@ -51,7 +54,7 @@
         <div class="map-module-container" id="guess-container">
             <div id="guess-map"></div>
             <button id="expand-guess-map" class="map-toggle"><i class="fa-solid fa-expand"></i></button>
-            <button id="guess-btn" class="guess-action-btn">Confirmar</button>
+            <button id="guess" class="guess-action-btn">Confirmar</button>
         </div>
     </div>
 
@@ -59,7 +62,7 @@
     <div id="round-result-screen" class="screen hidden">
         <div class="result-card">
             <div class="result-header">
-                <h2 id="round-message">Muito Perto!</h2>
+                <h2 id="round-message"></h2>
                 <div class="result-points">+<span id="round-points">0</span> pts</div>
             </div>
             <div class="result-details">
@@ -72,12 +75,12 @@
     <!-- Final Screen -->
     <div id="final-screen" class="screen hidden">
         <div class="minimal-panel final">
-            <h1>Fim de Jogo</h1>
+            <h1>Fim de jogo</h1>
             <div class="final-score-display">
                 <span id="final-total-score">0</span> pts
             </div>
             <p id="final-verdict" class="verdict-text"></p>
-            <button id="restart-btn" class="primary-btn">Jogar Novamente</button>
+            <button id="restart-btn" class="primary-btn">Jogar novamente</button>
         </div>
         <canvas id="fireworks-canvas"></canvas>
     </div>

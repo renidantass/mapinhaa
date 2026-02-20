@@ -1,25 +1,36 @@
 import state from "./state.js";
-import { startGame } from "./logic.js";
-import { elements, maps, showScreen, initMapIntoElement, initPanoramaMapIntoElement, updateRound, expandGuessMap } from "./ui.js";
+import * as logic from "./logic.js";
+import * as ui from "./ui.js";
 
-elements.play.addEventListener('click', async () => {
-    await startGame();
-    updateRound(state.currentRound, state.rounds);
-    showScreen('game-ui');
-    await initMapIntoElement(elements.guessMap, state.userLocation);
-    await initPanoramaMapIntoElement(elements.panoramaMap, state.userLocation);
+ui.elements.play.addEventListener('click', async () => {
+    await logic.startGame();
+    ui.updateRound(state.currentRound, state.rounds);
+    ui.showScreen('game-ui');
+    await ui.initMapIntoElement(ui.elements.guessMap, state.userLocation);
+    await ui.initPanoramaMapIntoElement(ui.elements.panoramaMap, state.userLocation);
 });
 
-elements.resetPosition.addEventListener('click', async () => {
-    maps.panorama.setPosition({ lat: state.userLocation.latitude, lng: state.userLocation.longitude });
-
-    elements.resetPosition.classList.add('clicked');
-
-    setInterval(() => {
-        elements.resetPosition.classList.remove('clicked');
-    }, 1000);
+ui.elements.resetPosition.addEventListener('click', async () => {
+    ui.resetPosition();
+    ui.animateResetPosition();
 });
 
-elements.expandGuessMap.addEventListener('click', () => {
-    expandGuessMap();
+ui.elements.expandGuessMap.addEventListener('click', () => {
+    ui.expandGuessMap();
+});
+
+ui.elements.guessButton.addEventListener('click', async () => {
+    if (!state.markers.guess)
+        return;
+
+    if (!state.markers.destination)
+        state.markers.destination = await ui.addMarker({ lat: state.userLocation.latitude, lng: state.userLocation.longitude }, maps.guess, 'Destino', elements.destinationIcon);
+
+    await logic.guess();
+    logic.stopCountdown();
+    logic.resetTimeLeft();
+    logic.nextRound();
+
+    ui.updateScore(state.score);
+    ui.updateRound(state.currentRound, state.rounds);
 });

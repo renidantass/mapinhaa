@@ -11,7 +11,10 @@ const elements = {
     timeLeft: document.getElementById('time-left'),
     round: document.getElementById('current-round'),
     rounds: document.getElementById('total-rounds'),
-    score: document.getElementById('current-score')
+    score: document.getElementById('current-score'),
+    palpiteIcon: document.getElementById('palpite-icon'),
+    destinationIcon: document.getElementById('destination-icon'),
+    guessButton: document.getElementById('guess')
 };
 
 const maps = {
@@ -63,6 +66,15 @@ const initMapIntoElement = async (element, userLocation) => {
         center: position,
         zoom: 8,
         disableDefaultUI: true,
+        mapId: "DEMO_MAP_ID"
+    });
+
+    google.maps.event.addListener(maps.guess, 'click', async (event) => {
+        if (state.markers.guess)
+            state.markers.guess.position = event.latLng;
+
+        if (!state.markers.guess)
+            state.markers.guess = await addMarker(event.latLng, maps.guess, 'Palpite', elements.palpiteIcon);
     });
 };
 
@@ -74,7 +86,7 @@ const initPanoramaMapIntoElement = async (element, userLocation) => {
             addressControl: false,
             disableDefaultUI: true,
             fullscreenControl: true,
-            showRoadLabels: false,
+            showRoadLabels: false
         },
     );
 };
@@ -116,6 +128,37 @@ const expandGuessMap = () => {
     }
 };
 
+const addMarker = async (location, map, label, iconElement) => {
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+    if (!label)
+        label = '-'
+
+    let marker = new AdvancedMarkerElement({
+        map: map,
+        position: location,
+        title: label,
+        anchorLeft: '-25%',
+        anchorTop: '-95%',
+    });
+
+    marker.append(iconElement);
+
+    return marker;
+};
+
+const resetPosition = () => {
+    maps.panorama.setPosition({ lat: state.userLocation.latitude, lng: state.userLocation.longitude });
+};
+
+const animateResetPosition = () => {
+    elements.resetPosition.classList.add('clicked');
+
+    setInterval(() => {
+        elements.resetPosition.classList.remove('clicked');
+    }, 1000);
+};
+
 setInterval(refreshTimeLeft, 1000);
 
 export {
@@ -126,5 +169,8 @@ export {
     initPanoramaMapIntoElement,
     updateRound,
     updateScore,
-    expandGuessMap
+    expandGuessMap,
+    addMarker,
+    resetPosition,
+    animateResetPosition
 };

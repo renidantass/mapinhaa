@@ -199,6 +199,11 @@ body {
     border-radius: 0 0 12px 12px;
 }
 
+.guess-action-btn:disabled,
+.guess-action-btn:hover:disabled {
+    background-color: gray;
+}
+
 .guess-action-btn:hover {
     background: #16a34a;
 }
@@ -319,4 +324,9 @@ body {
 
 .text-danger {
     color: var(--danger);
+}
+
+.custom-marker {
+    background: red;
+    font-size: 120px;
 }
