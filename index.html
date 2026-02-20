@@ -18,33 +18,14 @@
             <h1 class="logo">Bairro<span class="highlight">Guessr</span></h1>
             
             <div class="main-actions">
-                <button id="geo-btn" class="primary-btn huge"><i class="fa-solid fa-location-arrow"></i> Jogar onde estou</button>
-                <div class="divider"><span>OU</span></div>
-                
-                <div class="input-wrapper">
-                    <input type="text" id="lat-input" placeholder="Latitude (-23.55)" class="clean-input">
-                    <input type="text" id="lng-input" placeholder="Longitude (-46.63)" class="clean-input">
-                </div>
-            </div>
-
-            <div class="footer-actions">
-                <button id="start-btn" class="secondary-btn">Começar com coordenadas</button>
-                <button id="settings-btn" class="icon-btn" title="Configurações (API Key)"><i class="fa-solid fa-gear"></i></button>
-            </div>
-
-            <!-- Settings Modal (Hidden by default) -->
-            <div id="settings-modal" class="settings-modal hidden">
-                <h3>Configurações</h3>
-                <label>Google Maps API Key</label>
-                <input type="password" value="AIzaSyDoaWmTN2513e5LGxOq--65ekL4PMqjUAs" id="api-key-input" placeholder="Cole sua chave aqui" class="clean-input full">
-                <button id="save-settings-btn" class="text-btn">Salvar</button>
+                <button id="play" class="primary-btn huge"><i class="fa-solid fa-location-arrow"></i> Jogar onde estou</button>
             </div>
         </div>
     </div>
 
     <!-- Game UI -->
-    <div id="game-ui" class="hidden">
-        <div id="pano"></div>
+    <div id="game-ui" class="screen hidden">
+        <div id="panorama-map"></div>
 
         <!-- Upper HUD -->
         <div class="hud-top">
@@ -72,7 +53,7 @@
     </div>
 
     <!-- Result Overlay -->
-    <div id="round-result-screen" class="overlay-screen hidden">
+    <div id="round-result-screen" class="screen hidden">
         <div class="result-card">
             <div class="result-header">
                 <h2 id="round-message">Muito Perto!</h2>
@@ -98,6 +79,7 @@
         <canvas id="fireworks-canvas"></canvas>
     </div>
 
-    <script src="app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoaWmTN2513e5LGxOq--65ekL4PMqjUAs&v=weekly&loading=async"></script>
+    <script src="js/listeners.js" type="module"></script>
 </body>
 </html>
