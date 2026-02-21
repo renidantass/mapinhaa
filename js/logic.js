@@ -16,6 +16,7 @@ const startGame = async () => {
 };
 
 const restartGame = async () => {
+    stopCountdown();
     state.playing = true;
     state.gameOver = false;
     state.currentRound = 1;
