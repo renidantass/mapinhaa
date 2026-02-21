@@ -171,7 +171,7 @@ const removeDrawings = async () => {
 };
 
 const resetPosition = () => {
-    maps.panorama.setPosition({ lat: state.userLocation.latitude, lng: state.userLocation.longitude });
+    maps.panorama.setPosition(state.destinationLocation);
 };
 
 const animateResetPosition = () => {
@@ -181,15 +181,14 @@ const animateResetPosition = () => {
         elements.resetPosition.classList.remove('clicked');
     }, 1000);
 };
-
 const drawRouteOnMap = (markerOne, markerTwo, map) => {
     state.routeLine = new google.maps.Polyline({
         path: [markerOne.position, markerTwo.position],
         geodesic: true,
-        strokeColor: "#FF0000", // Cor da linha (Vermelho)
-        strokeOpacity: 0.8, // Transparência (0.0 a 1.0)
-        strokeWeight: 3, // Espessura da linha em píxeis
-        map: map // O mapa onde a linha será desenhada
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        map
     });
 };
 
