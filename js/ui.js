@@ -16,7 +16,9 @@ const elements = {
     finalTotalScore: document.getElementById('final-total-score'),
     palpiteIcon: document.getElementById('palpite-icon'),
     destinationIcon: document.getElementById('destination-icon'),
-    confirm: document.getElementById('guess')
+    confirm: document.getElementById('guess'),
+    roundDistance: document.getElementById('round-distance'),
+    roundPoints: document.getElementById('round-points')
 };
 
 const maps = {
@@ -196,6 +198,11 @@ const refreshMaps = () => {
     maps.panorama.setPosition(state.destinationLocation);
 };
 
+const updateRoundStats = (distance, points) => {
+    elements.roundDistance.innerText = distance;
+    elements.roundPoints.innerText = points;
+}
+
 setInterval(() => {
     refreshTimeLeft();
     updateRound(state.currentRound);
@@ -226,5 +233,6 @@ export {
     resetPosition,
     animateResetPosition,
     drawRouteOnMap,
-    refreshMaps
+    refreshMaps,
+    updateRoundStats
 };

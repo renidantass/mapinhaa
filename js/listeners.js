@@ -32,23 +32,17 @@ ui.elements.confirm.addEventListener('click', async () => {
 
     ui.drawRouteOnMap(state.markers.guess, state.markers.destination, ui.maps.guess);
 
-    await logic.takeGuess();
+    const roundStats = await logic.takeGuess();
     logic.completeRound();
+
+    ui.updateRoundStats(roundStats.distance, roundStats.score);
+    ui.showScreen('round-result-screen');
 
     ui.refreshMaps();
     ui.maps.panorama.addListener('status_changed', () => {
         const status = ui.maps.panorama.getStatus();
 
-        if (status === 'OK') {
+        if (status === 'OK')
             ui.removeDrawings();
-        } else if (status === 'ZERO_RESULTS') {
-            console.error('Não tem imagem para essa localização');
-        }
     });
-
-    if (state.currentRound == state.rounds) {
-        setTimeout(() => {
-            ui.showScreen('final-screen');
-        }, 500);
-    }
 });

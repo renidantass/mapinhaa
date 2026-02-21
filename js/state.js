@@ -11,8 +11,8 @@ const state = {
     destinationLocation: { lat: 0, lng: 0 },
     rounds: 2,
     currentRound: 1,
-    secondsPerRound: 5,
-    timeLeft: 5,
+    secondsPerRound: 120,
+    timeLeft: 120,
     score: 0,
     interval: null
 };
