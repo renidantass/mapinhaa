@@ -179,6 +179,10 @@ const updateRoundStats = (distance, points) => {
     domElements.roundPoints.innerText = points;
 }
 
+const setVeredictText = (text) => {
+    domElements.finalVerdict.innerText = text;
+};
+
 setInterval(() => {
     refreshTimeLeft();
     updateRound(state.currentRound);
@@ -208,5 +212,6 @@ export {
     animateResetPosition,
     drawRouteOnMap,
     refreshMaps,
-    updateRoundStats
+    updateRoundStats,
+    setVeredictText
 };

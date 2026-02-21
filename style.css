@@ -43,7 +43,7 @@ body {
 /* Minimal Panel */
 .minimal-panel {
     background: var(--card-bg);
-    padding: 2.5rem;
+    padding: 2rem;
     border-radius: 24px;
     width: 100%;
     max-width: 420px;
@@ -69,6 +69,7 @@ body {
     color: white;
     border: none;
     padding: 14px 24px;
+    margin-top: 10px;
     border-radius: var(--radius);
     font-weight: 600;
     cursor: pointer;

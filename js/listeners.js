@@ -38,6 +38,13 @@ domElements.confirm.addEventListener('click', async () => {
 
     ui.drawRouteOnMap(state.markers.guess, state.markers.destination, maps.guess);
 
+    if (state.currentRound == state.rounds) {
+        const veredictText = logic.getVeredictByScore(state.score);
+        ui.setVeredictText(veredictText);
+        ui.showScreen('final-screen');
+        return;
+    }
+
     const roundStats = await logic.takeGuess();
     logic.completeRound();
 

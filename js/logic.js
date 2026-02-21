@@ -164,6 +164,18 @@ const gameOver = () => {
     state.gameOver = true;
 };
 
+const getVeredictByScore = () => {
+    if (state.score < 1000) {
+        return "Se mudou recente?!";
+    } else if (state.score > 1000 && state.score <= 10000) {
+        return "Hm... você já mora aí há uma década";
+    } else if (state.score > 1000 && state.score <= 10000) {
+        return "... como?"
+    } else {
+        return "O prefeito tem inveja de você...";
+    }
+};
+
 export {
     startGame,
     restartGame,
@@ -175,5 +187,6 @@ export {
     resetTimeLeft,
     nextRound,
     setRandomCoordinatesInDestination,
-    resetMarkers
+    resetMarkers,
+    getVeredictByScore
 };

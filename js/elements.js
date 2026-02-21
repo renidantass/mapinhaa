@@ -17,7 +17,8 @@ const domElements = {
     confirm: document.getElementById('guess'),
     roundDistance: document.getElementById('round-distance'),
     roundPoints: document.getElementById('round-points'),
-    nextRound: document.getElementById('next-round')
+    nextRound: document.getElementById('next-round'),
+    finalVerdict: document.getElementById('final-verdict')
 };
 
 const maps = {
