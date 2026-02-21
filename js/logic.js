@@ -170,10 +170,10 @@ const getVeredictByScore = () => {
         return "Se mudou recente?!";
     } else if (state.score > 1000 && state.score <= 10000) {
         return "Hm... você já mora aí há uma década";
-    } else if (state.score > 1000 && state.score <= 10000) {
-        return "... como?"
+    } else if (state.score > 10000 && state.score <= 100000) {
+        return "O prefeito tem inveja de você..."
     } else {
-        return "O prefeito tem inveja de você...";
+        return "... como?!";
     }
 };
 
