@@ -1,36 +1,42 @@
 import state from "./state.js";
+import { domElements, maps } from "./elements.js";
 import * as logic from "./logic.js";
 import * as ui from "./ui.js";
 
-ui.elements.play.addEventListener('click', async () => {
+domElements.play.addEventListener('click', async () => {
     await logic.startGame();
     ui.showScreen('game-ui');
-    await ui.initMapIntoElement(ui.elements.guessMap);
-    await ui.initPanoramaMapIntoElement(ui.elements.panoramaMap);
+    await ui.initMapIntoElement(domElements.guessMap);
+    await ui.initPanoramaMapIntoElement(domElements.panoramaMap);
 });
 
-ui.elements.restart.addEventListener('click', async () => {
+domElements.nextRound.addEventListener('click', async () => {
+    await logic.completeRound();
+    ui.showScreen('game-ui');
+});
+
+domElements.restart.addEventListener('click', async () => {
     await logic.restartGame();
     ui.showScreen('game-ui');
 });
 
-ui.elements.resetPosition.addEventListener('click', async () => {
+domElements.resetPosition.addEventListener('click', async () => {
     ui.resetPosition();
     ui.animateResetPosition();
 });
 
-ui.elements.expandGuessMap.addEventListener('click', () => {
+domElements.expandGuessMap.addEventListener('click', () => {
     ui.expandGuessMap();
 });
 
-ui.elements.confirm.addEventListener('click', async () => {
+domElements.confirm.addEventListener('click', async () => {
     if (!state.markers.guess)
         return;
 
     if (!state.markers.destination)
-        state.markers.destination = await ui.addMarker(state.destinationLocation, ui.maps.guess, 'Destino', ui.elements.destinationIcon);
+        state.markers.destination = await ui.addMarker(state.destinationLocation, maps.guess, 'Destino', domElements.destinationIcon);
 
-    ui.drawRouteOnMap(state.markers.guess, state.markers.destination, ui.maps.guess);
+    ui.drawRouteOnMap(state.markers.guess, state.markers.destination, maps.guess);
 
     const roundStats = await logic.takeGuess();
     logic.completeRound();
@@ -39,8 +45,8 @@ ui.elements.confirm.addEventListener('click', async () => {
     ui.showScreen('round-result-screen');
 
     ui.refreshMaps();
-    ui.maps.panorama.addListener('status_changed', () => {
-        const status = ui.maps.panorama.getStatus();
+    maps.panorama.addListener('status_changed', () => {
+        const status = maps.panorama.getStatus();
 
         if (status === 'OK')
             ui.removeDrawings();

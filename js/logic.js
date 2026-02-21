@@ -88,9 +88,10 @@ const calculateScore = async (distance) => {
 
 const takeGuess = async () => {
     const distance = await getDistance(state.markers.guess, state.markers.destination);
-    state.score = await calculateScore(distance);
+    const score = await calculateScore(distance);
+    state.score += score;
 
-    return { distance: (distance / 1000).toFixed(2), score: state.score };
+    return { distance: (distance / 1000).toFixed(2), score };
 };
 
 const nextRound = () => {

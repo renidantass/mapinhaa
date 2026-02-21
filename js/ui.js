@@ -1,30 +1,5 @@
 import state from "./state.js";
-
-const elements = {
-    play: document.getElementById('play'),
-    restart: document.getElementById('restart'),
-    guessMap: document.getElementById('guess-map'),
-    panoramaMap: document.getElementById('panorama-map'),
-    resetPosition: document.getElementById('reset-position'),
-    expandGuessMap: document.getElementById('expand-guess-map'),
-    guessContainer: document.getElementById('guess-container'),
-    timer: document.querySelector('.timer'),
-    timeLeft: document.getElementById('time-left'),
-    round: document.getElementById('current-round'),
-    rounds: document.getElementById('total-rounds'),
-    score: document.getElementById('current-score'),
-    finalTotalScore: document.getElementById('final-total-score'),
-    palpiteIcon: document.getElementById('palpite-icon'),
-    destinationIcon: document.getElementById('destination-icon'),
-    confirm: document.getElementById('guess'),
-    roundDistance: document.getElementById('round-distance'),
-    roundPoints: document.getElementById('round-points')
-};
-
-const maps = {
-    guess: null,
-    panorama: null
-};
+import { domElements, maps } from "./elements.js";
 
 const disableScreen = (screen) => {
     screen.classList = 'screen hidden';
@@ -79,7 +54,7 @@ const initMapIntoElement = async (element) => {
             state.markers.guess.position = event.latLng;
 
         if (!state.markers.guess)
-            state.markers.guess = await addMarker(event.latLng, maps.guess, 'Palpite', elements.palpiteIcon);
+            state.markers.guess = await addMarker(event.latLng, maps.guess, 'Palpite', domElements.palpiteIcon);
     });
 };
 
@@ -99,38 +74,38 @@ const initPanoramaMapIntoElement = async (element) => {
 const refreshTimeLeft = () => {
     const timeLeft = state.timeLeft;
 
-    elements.timeLeft.innerText = timeLeft;
+    domElements.timeLeft.innerText = timeLeft;
 
     if (timeLeft <= 0) {
-        elements.timer.classList.remove('text-danger');
+        domElements.timer.classList.remove('text-danger');
         return;
     }
 
     if (timeLeft > 0 && timeLeft < 20)
-        elements.timer.classList.add('text-danger');
+        domElements.timer.classList.add('text-danger');
 };
 
 const updateRound = (currentRound) => {
     if (currentRound > state.rounds)
         return;
 
-    elements.round.innerText = currentRound;
-    elements.rounds.innerText = state.rounds
+    domElements.round.innerText = currentRound;
+    domElements.rounds.innerText = state.rounds
 };
 
 const updateScore = (score) => {
     if (score < 0)
         return;
 
-    elements.score.innerText = score;
-    elements.finalTotalScore.innerText = score;
+    domElements.score.innerText = score;
+    domElements.finalTotalScore.innerText = score;
 };
 
 const expandGuessMap = () => {
-    if (elements.guessContainer.classList.contains('expanded')) {
-        elements.guessContainer.classList.remove('expanded')
+    if (domElements.guessContainer.classList.contains('expanded')) {
+        domElements.guessContainer.classList.remove('expanded')
     } else {
-        elements.guessContainer.classList.add('expanded')
+        domElements.guessContainer.classList.add('expanded')
     }
 };
 
@@ -147,6 +122,8 @@ const addMarker = async (location, map, label, iconElement) => {
         anchorLeft: '-25%',
         anchorTop: '-95%',
     });
+
+    marker.tracksViewChanges = false;
 
     marker.append(iconElement);
 
@@ -175,10 +152,10 @@ const resetPosition = () => {
 };
 
 const animateResetPosition = () => {
-    elements.resetPosition.classList.add('clicked');
+    domElements.resetPosition.classList.add('clicked');
 
     setInterval(() => {
-        elements.resetPosition.classList.remove('clicked');
+        domElements.resetPosition.classList.remove('clicked');
     }, 1000);
 };
 const drawRouteOnMap = (markerOne, markerTwo, map) => {
@@ -198,8 +175,8 @@ const refreshMaps = () => {
 };
 
 const updateRoundStats = (distance, points) => {
-    elements.roundDistance.innerText = distance;
-    elements.roundPoints.innerText = points;
+    domElements.roundDistance.innerText = distance;
+    domElements.roundPoints.innerText = points;
 }
 
 setInterval(() => {
@@ -219,8 +196,6 @@ setInterval(() => {
 }, 1000);
 
 export {
-    elements,
-    maps,
     showScreen,
     initMapIntoElement,
     initPanoramaMapIntoElement,

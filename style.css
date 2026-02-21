@@ -228,7 +228,7 @@ body {
     background: var(--card-bg);
     padding: 20px;
     border-radius: 20px;
-    width: 100%;
+    width: 33%;
     text-align: center;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -249,7 +249,7 @@ body {
 
 .result-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 15px;
 }
