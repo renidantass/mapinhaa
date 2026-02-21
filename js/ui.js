@@ -55,16 +55,19 @@ const showScreen = (screenName) => {
     }
 
     const currentScreen = getCurrentScreen();
-    disableScreen(currentScreen);
-
     const nextScreen = getScreen(screenName);
+
+    if (currentScreen == nextScreen)
+        return;
+
+    disableScreen(currentScreen);
     enableScreen(nextScreen);
 };
 
 const initMapIntoElement = async (element) => {
     maps.guess = new google.maps.Map(element, {
-        center: state.destinationLocation,
-        zoom: 8,
+        center: state.userLocation,
+        zoom: 7,
         disableDefaultUI: true,
         mapId: "DEMO_MAP_ID"
     });
@@ -78,7 +81,7 @@ const initMapIntoElement = async (element) => {
     });
 };
 
-const initPanoramaMapIntoElement = async (element, userLocation) => {
+const initPanoramaMapIntoElement = async (element) => {
     maps.panorama = new google.maps.StreetViewPanorama(
         element,
         {
@@ -148,12 +151,21 @@ const addMarker = async (location, map, label, iconElement) => {
     return marker;
 };
 
-const removeMarkers = () => {
-    if (!state.markers.guess || !state.markers.destination)
-        return;
+const removeDrawings = async () => {
+    if (state.markers.guess) {
+        state.markers.guess.map = null;
+        state.markers.guess = null;
+    }
 
-    state.markers.guess.map = null;
-    state.markers.destination.map = null;
+    if (state.markers.destination) {
+        state.markers.destination.map = null;
+        state.markers.destination = null;
+    }
+
+    if (state.routeLine) {
+        state.routeLine.setMap(null);
+        state.routeLine = null;
+    }
 };
 
 const resetPosition = () => {
@@ -168,7 +180,37 @@ const animateResetPosition = () => {
     }, 1000);
 };
 
-setInterval(refreshTimeLeft, 1000);
+const drawRouteOnMap = (markerOne, markerTwo, map) => {
+    state.routeLine = new google.maps.Polyline({
+        path: [markerOne.position, markerTwo.position],
+        geodesic: true,
+        strokeColor: "#FF0000", // Cor da linha (Vermelho)
+        strokeOpacity: 0.8, // Transparência (0.0 a 1.0)
+        strokeWeight: 3, // Espessura da linha em píxeis
+        map: map // O mapa onde a linha será desenhada
+    });
+};
+
+const refreshMaps = () => {
+    maps.guess.setCenter(state.destinationLocation);
+    maps.panorama.setPosition(state.destinationLocation);
+};
+
+setInterval(() => {
+    refreshTimeLeft();
+    updateRound(state.currentRound);
+    updateScore(state.score);
+
+    if (state.gameOver && !state.playing) {
+        showScreen('final-screen');
+    }
+
+    if (state.positionWasUpdated) {
+        refreshMaps();
+        state.positionWasUpdated = false;
+    }
+
+}, 1000);
 
 export {
     elements,
@@ -180,7 +222,9 @@ export {
     updateScore,
     expandGuessMap,
     addMarker,
-    removeMarkers,
+    removeDrawings,
     resetPosition,
-    animateResetPosition
+    animateResetPosition,
+    drawRouteOnMap,
+    refreshMaps
 };

@@ -6,6 +6,7 @@ const startGame = async () => {
 
     try {
         state.userLocation = await getCoordinatesFromUser();
+        await setRandomCoordinatesInDestination();
         initCountdown();
     } catch (err) {
         console.error(err);
@@ -14,9 +15,13 @@ const startGame = async () => {
     }
 };
 
-const restartGame = () => {
-    state.currentRound = 0;
+const restartGame = async () => {
+    state.playing = true;
+    state.gameOver = false;
+    state.currentRound = 1;
     state.score = 0;
+    await setRandomCoordinatesInDestination();
+    initCountdown();
 };
 
 const initCountdown = () => {
@@ -38,8 +43,15 @@ const updateCountdown = () => {
     if (state.timeLeft > 0)
         state.timeLeft--;
 
-    if (state.timeLeft < 1)
+    if (state.timeLeft == 0 && state.currentRound == state.rounds)
+        gameOver();
+
+    if (state.timeLeft == 0 && !state.markers.guess)
+        completeRound();
+
+    if (state.timeLeft == 0)
         clearInterval(state.interval);
+
 };
 
 const getPositionFromNavigator = () => {
@@ -84,44 +96,47 @@ const nextRound = () => {
         state.currentRound++;
 };
 
-function sortearCoordenadaPerto(latBase, lngBase, raioMaximo = 0.01) {
-    const variacaoLat = (Math.random() - 0.5) * raioMaximo;
-    const variacaoLng = (Math.random() - 0.5) * raioMaximo;
+const randomizeCloseCoordinates = (latBase, lngBase, maximumRadius = 0.01) => {
+    const latitudeVariance = (Math.random() - 0.5) * maximumRadius;
+    const longitudeVariance = (Math.random() - 0.5) * maximumRadius;
 
     return {
-        lat: latBase + variacaoLat,
-        lng: lngBase + variacaoLng
+        lat: latBase + latitudeVariance,
+        lng: lngBase + longitudeVariance
     };
 };
 
-async function sortearEnderecoReal(userLocation) {
+const randomizeCoordinates = async (userLocation) => {
     const { Geocoder } = await google.maps.importLibrary("geocoding");
     const geocoder = new Geocoder();
 
-    let encontrouEndereco = false;
-    let tentativa = 0;
+    let addressFound = false;
+    let retries = 0;
 
-    while (!encontrouEndereco && tentativa < 10) {
-        tentativa++;
-        const pontoSorteado = sortearCoordenadaPerto(userLocation.lat, userLocation.lng, 0.02);
+    while (!addressFound && retries < 10) {
+        retries++;
+        const randomizedCoordinates = randomizeCloseCoordinates(userLocation.lat, userLocation.lng, 0.02);
 
         try {
-            const resposta = await geocoder.geocode({ location: pontoSorteado });
+            const response = await geocoder.geocode({ location: randomizedCoordinates });
 
-            if (resposta.results && resposta.results[0]) {
-                encontrouEndereco = true;
-                console.log(`Sucesso na tentativa ${tentativa}!`);
-
-                return resposta.results[0].geometry.location;
+            if (response.results && response.results[0]) {
+                addressFound = true;
+                return response.results[0].geometry.location;
             }
-        } catch (erro) {
-            // Se o Google reclamar (ex: caiu no mar), ele cai aqui e o loop roda de novo
-            console.log("Caiu num lugar sem endereço, sorteando de novo...");
+        } catch (err) {
+            console.log(`Caiu num lugar sem endereço, sorteando de novo... [${err}]`);
         }
     }
 
     return "Não foi possível sortear um endereço fácil agora.";
 };
+
+const setRandomCoordinatesInDestination = async () => {
+    const coordinates = await randomizeCoordinates(state.userLocation);
+    state.destinationLocation = coordinates;
+    state.positionWasUpdated = true;
+}
 
 const resetMarkers = () => {
     state.markers = {
@@ -130,12 +145,20 @@ const resetMarkers = () => {
     };
 };
 
-const completeRound = () => {
+const completeRound = async () => {
     stopCountdown();
     resetTimeLeft();
     nextRound();
-    resetMarkers();
     initCountdown();
+    setRandomCoordinatesInDestination();
+};
+
+const gameOver = () => {
+    stopCountdown();
+    resetTimeLeft();
+    state.currentRound = 0;
+    state.playing = false;
+    state.gameOver = true;
 };
 
 export {
@@ -148,6 +171,6 @@ export {
     stopCountdown,
     resetTimeLeft,
     nextRound,
-    sortearEnderecoReal,
+    setRandomCoordinatesInDestination,
     resetMarkers
 };
