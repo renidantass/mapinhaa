@@ -22,6 +22,7 @@ Um jogo no estilo GeoGuessr focado em descobrir bairros da sua cidade.
 - `style.css`: Estilização moderna e responsiva.
 - `js`: Lógica do jogo (Google Maps, Sistema de Pontuação, Canvas).
 
+```
 ❯ tree .
 .
 ├── images
@@ -42,6 +43,7 @@ Um jogo no estilo GeoGuessr focado em descobrir bairros da sua cidade.
 │   └── ui.js: Funções que alteram somente UI
 ├── README.md
 └── style.css
+```
 
 ## Tecnologias
 
