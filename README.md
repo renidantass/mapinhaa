@@ -20,7 +20,30 @@ Um jogo no estilo GeoGuessr focado em descobrir bairros da sua cidade.
 
 - `index.html`: Estrutura do jogo.
 - `style.css`: Estilização moderna e responsiva.
-- `app.js`: Lógica do jogo (Google Maps, Sistema de Pontuação, Canvas).
+- `js`: Lógica do jogo (Google Maps, Sistema de Pontuação, Canvas).
+
+```
+❯ tree .
+.
+├── images
+│   ├── android-chrome-192x192.png
+│   ├── android-chrome-512x512.png
+│   ├── apple-touch-icon.png
+│   ├── destination.svg
+│   ├── favicon-16x16.png
+│   ├── favicon-32x32.png
+│   ├── favicon.ico
+│   └── flag.svg
+├── index.html: Estrutura do jogo
+├── js: Lógica
+│   ├── elements.js: Elementos do DOM e mapas a serem utilizados pelo jogo
+│   ├── listeners.js: Event listeners de elementos DOM do jogo, une chamadas a lógica e UI
+│   ├── logic.js: Lógica do jogo, não interfere diretamente na UI
+│   ├── state.js: Apenas representa o estado do jogo
+│   └── ui.js: Funções que alteram somente UI
+├── README.md
+└── style.css
+```
 
 ## Tecnologias
 
