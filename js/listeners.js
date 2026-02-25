@@ -38,6 +38,8 @@ domElements.confirm.addEventListener('click', async () => {
 
     ui.drawRouteOnMap(state.markers.guess, state.markers.destination, maps.guess);
 
+    const roundStats = await logic.takeGuess();
+
     if (state.currentRound == state.rounds) {
         const veredictText = logic.getVeredictByScore(state.score);
         ui.setVeredictText(veredictText);
@@ -45,7 +47,6 @@ domElements.confirm.addEventListener('click', async () => {
         return;
     }
 
-    const roundStats = await logic.takeGuess();
     logic.completeRound();
 
     ui.updateRoundStats(roundStats.distance, roundStats.score);

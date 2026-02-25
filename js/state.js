@@ -9,7 +9,7 @@ const state = {
     routeLine: null,
     userLocation: { lat: 0, lng: 0 },
     destinationLocation: { lat: 0, lng: 0 },
-    rounds: 2,
+    rounds: 5,
     currentRound: 1,
     secondsPerRound: 120,
     timeLeft: 120,
