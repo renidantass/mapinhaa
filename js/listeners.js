@@ -47,8 +47,6 @@ domElements.confirm.addEventListener('click', async () => {
         return;
     }
 
-    logic.completeRound();
-
     ui.updateRoundStats(roundStats.distance, roundStats.score);
     ui.showScreen('round-result-screen');
 
