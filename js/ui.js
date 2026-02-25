@@ -42,9 +42,11 @@ const showScreen = (screenName) => {
 };
 
 const initMapIntoElement = async (element) => {
+    const defaultZoom = 7;
+
     maps.guess = new google.maps.Map(element, {
         center: state.userLocation,
-        zoom: 7,
+        zoom: defaultZoom,
         disableDefaultUI: true,
         mapId: "DEMO_MAP_ID"
     });
@@ -170,7 +172,7 @@ const drawRouteOnMap = (markerOne, markerTwo, map) => {
 };
 
 const refreshMaps = () => {
-    maps.guess.setCenter(state.destinationLocation);
+    maps.guess.setCenter(state.userLocation);
     maps.panorama.setPosition(state.destinationLocation);
 };
 
@@ -199,6 +201,15 @@ setInterval(() => {
 
 }, 1000);
 
+const resetZoomMap = (map) => {
+    if (!map)
+        return;
+
+    const defaultZoom = 7;
+
+    map.setZoom(defaultZoom);
+};
+
 export {
     showScreen,
     initMapIntoElement,
@@ -213,5 +224,6 @@ export {
     drawRouteOnMap,
     refreshMaps,
     updateRoundStats,
-    setVeredictText
+    setVeredictText,
+    resetZoomMap
 };

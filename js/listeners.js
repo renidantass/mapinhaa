@@ -51,6 +51,8 @@ domElements.confirm.addEventListener('click', async () => {
     ui.showScreen('round-result-screen');
 
     ui.refreshMaps();
+    ui.resetZoomMap(maps.guess);
+
     maps.panorama.addListener('status_changed', () => {
         const status = maps.panorama.getStatus();
 
